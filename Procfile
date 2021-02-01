@@ -1,2 +1,2 @@
 web: LineBotTemplate
-clock: python clock.pys
+clock: python clock.py
