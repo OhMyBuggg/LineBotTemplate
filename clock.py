@@ -1,7 +1,7 @@
 # use to wakeup app
 from apscheduler.schedulers.blocking import BlockingScheduler
 import datetime
-import urllib
+import urllib.request
 
 sched = BlockingScheduler()
 
