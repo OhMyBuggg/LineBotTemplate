@@ -29,9 +29,14 @@ func main() {
 	bot, err = linebot.New(os.Getenv("ChannelSecret"), os.Getenv("ChannelAccessToken"))
 	log.Println("Bot:", bot, " err:", err)
 	http.HandleFunc("/callback", callbackHandler)
+	http.HandleFunc("/", homeHandler)
 	port := os.Getenv("PORT")
 	addr := fmt.Sprintf(":%s", port)
 	http.ListenAndServe(addr, nil)
+}
+
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "<H1>Hello, this is Bugbot's homepage!</H1>")
 }
 
 func callbackHandler(w http.ResponseWriter, r *http.Request) {
