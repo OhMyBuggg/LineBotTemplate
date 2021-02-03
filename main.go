@@ -55,13 +55,23 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 		if event.Type == linebot.EventTypeMessage {
 			switch message := event.Message.(type) {
 			case *linebot.TextMessage:
-				quota, err := bot.GetMessageQuota().Do()
-				if err != nil {
-					log.Println("Quota err:", err)
-				}
-				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(
-					"EventReplyToken: "+event.ReplyToken+"\nMessageID: "+message.ID+"\nMessageText: "+message.Text+"\nUserID: "+event.Source.UserID+"remain message: "+strconv.FormatInt(quota.Value, 10))).Do(); err != nil {
-					log.Print(err)
+				content := message.Text
+				switch content {
+				case "測試":
+					quota, err := bot.GetMessageQuota().Do()
+					if err != nil {
+						log.Println("Quota err:", err)
+					}
+					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(
+						"EventReplyToken: "+event.ReplyToken+"\nMessageID: "+message.ID+"\nMessageText: "+message.Text+"\nUserID: "+event.Source.UserID+"\nremain message: "+strconv.FormatInt(quota.Value, 10))).Do()
+					if err != nil {
+						log.Print(err)
+					}
+				case "蟲蟲機器人":
+					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("我還醒著\n")).Do()
+					if err != nil {
+						log.Print(err)
+					}
 				}
 			}
 		}
