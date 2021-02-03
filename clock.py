@@ -11,7 +11,7 @@ def scheduled_job():
 
     print('========== APScheduler CRON =========')
     # 馬上讓我們瞧瞧
-    print('This job runs every day */2 min.')
+    print('This job runs every day */20 min during 10 a.m. to 11 a.m.')
     # 利用datetime查詢時間
     print(f'{datetime.datetime.now().ctime()}')
     print('========== APScheduler CRON =========')
