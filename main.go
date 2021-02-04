@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	"github.com/line/line-bot-sdk-go/linebot"
+	Content "content"
 )
 
 var bot *linebot.Client
@@ -56,8 +57,8 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 		if event.Type == linebot.EventTypeMessage {
 			switch message := event.Message.(type) {
 			case *linebot.TextMessage:
-				content := message.Text
-				cmd := strings.Split(content, " ")
+				text := message.Text
+				cmd := strings.Split(text, " ")
 
 				switch cmd[0] {
 				case "測試":
@@ -71,12 +72,19 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						log.Print(err)
 					}
 				case "蟲蟲機器人":
-					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("我還醒著")).Do()
+					reply := Content.Status
+					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(reply)).Do()
 					if err != nil {
 						log.Print(err)
 					}
 				case "重複":
 					reply := strings.TrimLeft(message.Text, "重複 ")
+					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(reply)).Do()
+					if err != nil {
+						log.Print(err)
+					}
+				default:
+					reply := Content.Usage
 					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(reply)).Do()
 					if err != nil {
 						log.Print(err)
