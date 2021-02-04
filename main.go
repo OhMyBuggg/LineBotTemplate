@@ -82,6 +82,30 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					if err != nil {
 						log.Print(err)
 					}
+				case "大頭貼":
+					target := strings.TrimLeft(message.Text, "大頭貼 ")
+					var sendr *linebot.Sender
+					switch target {
+					case "熊大":
+						sendr = linebot.NewSender("Brown", Content.BrownImage)
+					case "兔兔":
+						sendr = linebot.NewSender("Cony", Content.ConyImage)
+					case "饅頭人":
+						sendr = linebot.NewSender("Moon", Content.MoonImage)
+					default:
+						reply := Content.StickerUsage
+						_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(reply)).Do()
+						if err != nil {
+							log.Print(err)
+						}
+					}
+
+					if sendr != nil {
+						_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("Hi, this is "+target+", Nice to meet you.").WithSender(sendr)).Do() 
+						if err != nil {
+							log.Print(err)
+						}
+					}
 				default:
 					reply := Content.Usage
 					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(reply)).Do()
