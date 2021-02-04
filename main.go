@@ -17,7 +17,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
 
 	"github.com/line/line-bot-sdk-go/linebot"
@@ -66,8 +65,8 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					if err != nil {
 						log.Println("Quota err:", err)
 					}
-					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(
-						"EventReplyToken: "+event.ReplyToken+"\nMessageID: "+message.ID+"\nMessageText: "+message.Text+"\nUserID: "+event.Source.UserID+"\nremain message: "+strconv.FormatInt(quota.Value, 10))).Do()
+					reply := Content.GetTestMessage(event.ReplyToken, message.ID, message.Text, event.Source.UserID, quota.Value)
+					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(reply)).Do()
 					if err != nil {
 						log.Print(err)
 					}
