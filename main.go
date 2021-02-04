@@ -101,7 +101,8 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					}
 
 					if sendr != nil {
-						_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("Hi, this is "+target+", Nice to meet you.").WithSender(sendr)).Do() 
+						reply := Content.GetStickerMessage(target)
+						_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(reply).WithSender(sendr)).Do() 
 						if err != nil {
 							log.Print(err)
 						}
