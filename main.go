@@ -122,7 +122,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						answer, err := youtube.ParseVideoInfo(videoInfo)
 						if err != nil {
 							log.Print(err)
-							reply := Content.Unknown
+							reply := Content.GetInfoError
 							_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(reply)).Do()
 							if err != nil {
 								log.Print(err)
