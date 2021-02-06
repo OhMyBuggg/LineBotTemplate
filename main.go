@@ -21,6 +21,7 @@ import (
 
 	"github.com/line/line-bot-sdk-go/linebot"
 	Content "content"
+	"youtube"
 )
 
 var bot *linebot.Client
@@ -105,6 +106,34 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(reply).WithSender(sendr)).Do() 
 						if err != nil {
 							log.Print(err)
+						}
+					}
+				case "youtube":
+					videoID := strings.TrimLeft(message.Text, "youtube ")
+					videoInfo, err := youtube.GetVideoInfo(videoID)
+					if err != nil {
+						log.Print(err)
+						reply := Content.GetInfoError
+						_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(reply)).Do()
+						if err != nil {
+							log.Print(err)
+						}
+					} else {
+						answer, err := youtube.ParseVideoInfo(videoInfo)
+						if err != nil {
+							log.Print(err)
+							reply := Content.Unknown
+							_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(reply)).Do()
+							if err != nil {
+								log.Print(err)
+							}
+						} else {
+							Title, Author := youtube.GetVideoTitleAuthor(answer)
+							reply := Content.GetInfo(Title, Author)
+							_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(reply)).Do()
+							if err != nil {
+								log.Print(err)
+							}
 						}
 					}
 				default:
