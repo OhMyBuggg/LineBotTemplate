@@ -137,14 +137,14 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								reply = Content.GetInfo(Title, Author, Url)
 							}
 
-							defer func() {
-								if r := recover(); r != nil {
-									_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("未知錯誤，請嘗試其他影片")).Do()
-									if err != nil {
-										log.Print(err)
-									}
-								}
-							}()
+							// defer func() {
+							// 	if r := recover(); r != nil {
+							// 		_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("未知錯誤，請嘗試其他影片")).Do()
+							// 		if err != nil {
+							// 			log.Print(err)
+							// 		}
+							// 	}
+							// }()
 							
 							_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(reply)).Do()
 							if err != nil {
