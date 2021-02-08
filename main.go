@@ -129,7 +129,13 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 							}
 						} else {
 							Title, Author := youtube.GetVideoTitleAuthor(answer)
-							reply := Content.GetInfo(Title, Author)
+							Url, err := youtube.GetDownloadLink(answer)
+							var reply string
+							if err != nil || Url == "" {
+								reply = Content.NoDownload
+							} else {
+								reply = Content.GetInfo(Title, Author, Url)
+							}
 							_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(reply)).Do()
 							if err != nil {
 								log.Print(err)

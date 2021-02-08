@@ -88,3 +88,20 @@ func GetVideoTitleAuthor(in url.Values) (string, string) {
 	}
 	return "", ""
 }
+
+func GetDownloadLink(in url.Values) (url string, err error) {
+	streamMap, ok := in["player_response"]
+	if !ok {
+		err = errors.New(fmt.Sprint("no stream map found in the server's answer"))
+		return "", err
+	}
+
+	var prData playerResponseData
+	if err := json.Unmarshal([]byte(streamMap[0]), &prData); err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+
+	return "url = " + prData.StreamingData.Formats[0].URL, nil
+	
+}
