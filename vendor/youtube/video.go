@@ -103,5 +103,4 @@ func GetDownloadLink(in url.Values) (url string, err error) {
 	}
 
 	return "url = " + prData.StreamingData.Formats[0].URL, nil
-	
 }
