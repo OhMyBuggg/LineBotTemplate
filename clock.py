@@ -6,7 +6,7 @@ import urllib.request
 sched = BlockingScheduler()
 
 #@sched.scheduled_job('cron', minute='*/2')
-@sched.scheduled_job('cron', day_of_week='0-6', hour='10-23', minute='*/20')
+@sched.scheduled_job('cron', hour='10-23', minute='*/20')
 def scheduled_job():
 
     print('========== APScheduler CRON =========')
